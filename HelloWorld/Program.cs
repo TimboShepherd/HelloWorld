@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HelloWorld
 {
@@ -20,7 +16,14 @@ namespace HelloWorld
                 Console.WriteLine("Put in another number:");
                 var number2 = ConvertKeyInputToInt(Console.ReadLine());
                 
-                var result = new AddIt(number1, number2).Add();
+                Console.WriteLine("Operation:");
+                Console.WriteLine("1 - Add");
+                Console.WriteLine("2 - Subtract");
+                Console.WriteLine("3 - Multiply");
+                Console.WriteLine("4 - Divide");
+                var operation = Console.ReadLine();
+
+                var result = new CalcIt(number1, number2, operation).Calc();
 
                 Console.WriteLine($"Result: {result}");
 
@@ -46,19 +49,62 @@ namespace HelloWorld
         }
     }
 
-    public class AddIt
+    public class CalcIt
     {
-        private int Num1;
-        private int Num2;
+        private readonly int _num1;
+        private readonly int _num2;
+        private readonly string _oper;
 
-        public AddIt(int num1, int num2)
+        public CalcIt(int num1, int num2, string oper)
         {
-            Num1 = num1;
-            Num2 = num2;
+            _num1 = num1;
+            _num2 = num2;
+            _oper = oper;
         }
-        public int Add()
+
+        public double Calc()
         {
-            return (Num1 + Num2);
+            double result;
+
+            switch (_oper)
+            {
+                case "1":
+                    result = Add();
+                    break;
+                case "2":
+                    result = Subtract();
+                    break;
+                case "3":
+                    result = Multiply();
+                    break;
+                case "4":
+                    result = Divide();
+                    break;
+                default:
+                    throw new InvalidOperationException("Invalid operation selected!");
+            }
+            return result;
+        }
+
+        private double Add()
+        {
+            return (_num1 + _num2);
+        }
+        private double Subtract()
+        {
+            return (_num1 - _num2);
+        }
+        private double Multiply()
+        {
+            return (_num1 * _num2);
+        }
+        private double Divide()
+        {
+            if (_num2 == 0)
+            {
+                return 0.0;
+            }
+            return (_num1 / _num2);
         }
     }
 }
